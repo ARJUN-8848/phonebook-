@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Phonebook</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body {
+            background-color: #f0f0f0;
+            font-family: Arial, sans-serif;
+            margin: 0;
+        }
+
+        .container {
+            display: flex;
+            justify-content: space-between;
+            margin: 20px;
+        }
+
+        .leftdiv,
+        .middlediv,
+        .rightdiv {
+            flex: 1;
+            margin: 10px;
+            padding: 20px;
+            background-color: #333;
+            color: white;
+            border-radius: 8px;
+        }
+
+        .form-container {
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+        }
+
+        input[type="submit"] {
+            background-color: #4caf50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        .update-form {
+            display: none;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="leftdiv">
+            <h2>Contact List</h2>
+            <ul id="contactList">
+                <!-- Contacts will be displayed here -->
+            </ul>
+        </div>
+
+        <div class="middlediv">
+            <h2>Add Contact</h2>
+            <div class="form-container">
+                <form id="contactForm" method="POST" action="#">
+                    <!-- Add your form fields here -->
+                    <label for="name">Name:</label>
+                    <input type="text" id="name" name="name" class="textboxstyle" required>
+
+                    <label for="phone">Phone:</label>
+                    <input type="text" id="phone" name="phone" class="textboxstyle" required>
+
+                    <input type="submit" value="Add Contact">
+                </form>
+            </div>
+        </div>
+
+        <div class="rightdiv">
+            <!-- You can add additional content or functionality here -->
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const contactForm = document.getElementById("contactForm");
+            const contactList = document.getElementById("contactList");
+
+            contactForm.addEventListener("submit", function (event) {
+                event.preventDefault();
+
+                // Add the new contact to the list
+                const name = document.getElementById("name").value;
+                const phone = document.getElementById("phone").value;
+
+                const listItem = document.createElement("li");
+                listItem.textContent = `${name}: ${phone}`;
+                addUpdateButtons(listItem); // Add update buttons
+                contactList.appendChild(listItem);
+
+                // Clear the form fields
+                contactForm.reset();
+            });
+
+            function addUpdateButtons(listItem) {
+                const updateNameButton = document.createElement("button");
+                updateNameButton.textContent = "Update Name";
+                updateNameButton.addEventListener("click", function () {
+                    showUpdateForm(listItem, "name");
+                });
+
+                const updatePhoneButton = document.createElement("button");
+                updatePhoneButton.textContent = "Update Phone";
+                updatePhoneButton.addEventListener("click", function () {
+                    showUpdateForm(listItem, "phone");
+                });
+
+                listItem.appendChild(updateNameButton);
+                listItem.appendChild(updatePhoneButton);
+
+                const updateForm = document.createElement("form");
+                updateForm.classList.add("update-form");
+                listItem.appendChild(updateForm);
+
+                const updateInput = document.createElement("input");
+                updateInput.type = "text";
+                updateInput.id = "updateValue";
+                updateForm.appendChild(updateInput);
+
+                const updateSubmit = document.createElement("input");
+                updateSubmit.type = "submit";
+                updateSubmit.value = "Update";
+                updateForm.appendChild(updateSubmit);
+
+                updateForm.addEventListener("submit", function (event) {
+                    event.preventDefault();
+                    const updatedValue = updateInput.value;
+                    const propertyName = listItem.getAttribute("data-property");
+
+                    if (propertyName === "name") {
+                        listItem.textContent = `${updatedValue}: ${listItem.getAttribute("data-phone")}`;
+                    } else if (propertyName === "phone") {
+                        listItem.textContent = `${listItem.getAttribute("data-name")}: ${updatedValue}`;
+                    }
+
+                    hideUpdateForm(listItem);
+                });
+            }
+
+            function showUpdateForm(listItem, property) {
+                const updateForm = listItem.querySelector(".update-form");
+                const updateInput = updateForm.querySelector("#updateValue");
+
+                updateInput.value = listItem.getAttribute(`data-${property}`);
+                listItem.setAttribute("data-property", property);
+
+                updateForm.style.display = "block";
+            }
+
+            function hideUpdateForm(listItem) {
+                const updateForm = listItem.querySelector(".update-form");
+                updateForm.style.display = "none";
+            }
+        });
+    </script>
+</body>
+
+</html>
