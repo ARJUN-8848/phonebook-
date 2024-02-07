@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html>
 
 <head>
@@ -71,32 +70,7 @@
 
 <body>
     <div class="container">
-        <div class="leftdiv">
-            <h2>Contact List</h2>
-            <ul id="contactList">
-                <!-- Contacts will be displayed here -->
-            </ul>
-        </div>
-
-        <div class="middlediv">
-            <h2>Add Contact</h2>
-            <div class="form-container">
-                <form id="contactForm" method="POST" action="#">
-                    <!-- Add your form fields here -->
-                    <label for="name">Name:</label>
-                    <input type="text" id="name" name="name" class="textboxstyle" required>
-
-                    <label for="phone">Phone:</label>
-                    <input type="text" id="phone" name="phone" class="textboxstyle" required>
-
-                    <input type="submit" value="Add Contact">
-                </form>
-            </div>
-        </div>
-
-        <div class="rightdiv">
-            <!-- You can add additional content or functionality here -->
-        </div>
+        <!-- Your HTML content here -->
     </div>
 
     <script>
@@ -140,15 +114,15 @@
                 updateForm.classList.add("update-form");
                 listItem.appendChild(updateForm);
 
+                const updateSubmit = document.createElement("input");
+                updateSubmit.type = "submit";
+                updateSubmit.value = "Update";
+                updateForm.appendChild(updateSubmit); // Move this line here
+
                 const updateInput = document.createElement("input");
                 updateInput.type = "text";
                 updateInput.id = "updateValue";
                 updateForm.appendChild(updateInput);
-
-                const updateSubmit = document.createElement("input");
-                updateSubmit.type = "submit";
-                updateSubmit.value = "Update";
-                updateForm.appendChild(updateSubmit);
 
                 updateForm.addEventListener("submit", function (event) {
                     event.preventDefault();
